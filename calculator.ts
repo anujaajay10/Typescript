@@ -1,48 +1,41 @@
-function add(num1: number, num2: number): number {
-    return num1 + num2;
+import * as readline from 'readline';
+ 
+function calculate(operation: string, num1: number, num2: number): number {
+  let result: number;
+  switch (operation) {
+    case "+":
+      result = num1 + num2;
+      break;
+    case "-":
+      result = num1 - num2;
+      break;
+    case "*":
+      result = num1 * num2;
+      break;
+    case "/":
+      result = num1 / num2;
+      break;
+    default:
+      throw new Error("Invalid operation: " + operation);
   }
+  return result;
+}
+ 
+function promptAndCalculate() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
   
-  function subtract(num1: number, num2: number): number {
-    return num1 - num2;
-  }
-  
-  function multiply(num1: number, num2: number): number {
-    return num1 * num2;
-  }
-  
-  function divide(num1: number, num2: number): number {
-    if (num2 === 0) {
-      throw new Error("Cannot divide by zero.");
-    }
-    return num1 / num2;
-  }
-  
-  function calculate(): void {
-    const num1 = Number(prompt("Enter the first number:"));
-    const num2 = Number(prompt("Enter the second number:"));
-    const operator = prompt("Enter the operation (+, -, *, /):");
-    
-    let result: number;
-    switch (operator) {
-      case "+":
-        result = add(num1, num2);
-        break;
-      case "-":
-        result = subtract(num1, num2);
-        break;
-      case "*":
-        result = multiply(num1, num2);
-        break;
-      case "/":
-        result = divide(num1, num2);
-        break;
-      default:
-        throw new Error("Invalid operation.");
-    }
-    
-    console.log(`The result of ${num1} ${operator} ${num2} is ${result}.`);
-  }
-  
-  // Example usage
-  calculate();
-  
+  rl.question("Enter an operation (+, -, *, /): ", (operation: string) => {
+    rl.question("Enter the first number: ", (num1: string) => {
+      rl.question("Enter the second number: ", (num2: string) => {
+        const result = calculate(operation, Number(num1), Number(num2));
+        console.log(`${num1} ${operation} ${num2} = ${result}`);
+        rl.close();
+      });
+    });
+  });
+}
+ 
+promptAndCalculate();

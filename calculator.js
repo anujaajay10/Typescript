@@ -1,40 +1,39 @@
-function add(num1, num2) {
-    return num1 + num2;
-}
-function subtract(num1, num2) {
-    return num1 - num2;
-}
-function multiply(num1, num2) {
-    return num1 * num2;
-}
-function divide(num1, num2) {
-    if (num2 === 0) {
-        throw new Error("Cannot divide by zero.");
-    }
-    return num1 / num2;
-}
-function calculate() {
-    var num1 = Number(prompt("Enter the first number:"));
-    var num2 = Number(prompt("Enter the second number:"));
-    var operator = prompt("Enter the operation (+, -, *, /):");
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var readline = require("readline");
+function calculate(operation, num1, num2) {
     var result;
-    switch (operator) {
+    switch (operation) {
         case "+":
-            result = add(num1, num2);
+            result = num1 + num2;
             break;
         case "-":
-            result = subtract(num1, num2);
+            result = num1 - num2;
             break;
         case "*":
-            result = multiply(num1, num2);
+            result = num1 * num2;
             break;
         case "/":
-            result = divide(num1, num2);
+            result = num1 / num2;
             break;
         default:
-            throw new Error("Invalid operation.");
+            throw new Error("Invalid operation: " + operation);
     }
-    console.log("The result of ".concat(num1, " ").concat(operator, " ").concat(num2, " is ").concat(result, "."));
+    return result;
 }
-// Example usage
-calculate();
+function promptAndCalculate() {
+    var rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    rl.question("Enter an operation (+, -, *, /): ", function (operation) {
+        rl.question("Enter the first number: ", function (num1) {
+            rl.question("Enter the second number: ", function (num2) {
+                var result = calculate(operation, Number(num1), Number(num2));
+                console.log("".concat(num1, " ").concat(operation, " ").concat(num2, " = ").concat(result));
+                rl.close();
+            });
+        });
+    });
+}
+promptAndCalculate();
